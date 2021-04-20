@@ -1,0 +1,30 @@
+
+function myFunction() {
+    //get method
+    //     fetch('http://localhost:4000/api/persons')
+    //   .then(response => response.json())
+    //   .then(data => console.log(data));
+
+    //post method
+
+
+    let data = {
+        "id": 2
+    }
+
+    fetch('http://localhost:4000/api/persons/getPersonById', {
+        method: 'POST', // or 'PUT'
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+
+}

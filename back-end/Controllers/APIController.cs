@@ -24,6 +24,8 @@ namespace WebApi.Controllers
         {
             var response = _userService.Authenticate(model);
 
+            Console.WriteLine("Hello World!");
+
             if (response == null)
                 return BadRequest(new { message = "Username or password is incorrect" });
 

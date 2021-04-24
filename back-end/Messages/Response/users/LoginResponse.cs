@@ -8,5 +8,6 @@ namespace WebApi.Messages.Response.users
     public class LoginResponse: BaseResponse
     {
         public bool LoginStatus { get; set; }
+        public WebApi.Entities.Models.Customer Customer { get; set; }
     }
 }

@@ -25,6 +25,28 @@ namespace WebApi.Controllers
             context = db;
         }
 
+        [Route("login")]
+        [HttpPost]
+        public LoginResponse Login([FromBody] LoginRequest request)
+        {
+            try
+            {
+                var isExist = context.Customers.FirstOrDefault(f => f.Username == request.Username && f.Password == request.Password); 
+
+                if (isExist != null)
+                {
+                    return new LoginResponse
+                    {
+                        LoginStatus = true,
+                        StatusCode = (int)HttpStatusCode.OK
+                    };
+                }
+                return new LoginResponse
+                {
+                    LoginStatus = false,
+                    StatusCode = (int)HttpStatusCode.BadRequest
+                };
+            }
         //[Route("users/list")]
         //[HttpPost]
         //public GetAllUsersResponse GetAlUsers([FromBody] GetAlUsersRequest request)
@@ -78,6 +100,61 @@ namespace WebApi.Controllers
                 };
             }
         }
+
+        [Route("customer/list")]
+        [HttpPost]
+        public GetListCustomerResponse GetAlUsers()
+        {
+            try
+            {
+                var listCustomer = context.Customers.ToList() ?? new List<Customer>();
+                return new GetListCustomerResponse
+                {
+                    ListCustomer = listCustomer,
+                    StatusCode = (int)HttpStatusCode.OK
+                };
+            }
+            catch (Exception e)
+            {
+                return new GetListCustomerResponse
+                {
+                    ListCustomer = null,
+                    StatusCode = (int)HttpStatusCode.BadRequest
+                };
+            }
+        }
+
+        //[Route("users/create")]
+        //[HttpPost]
+        //public CreateUserResponse CreateUser([FromBody] CreateUserRequest request)
+        //{
+        //    try
+        //    {
+        //        var newUser = new User
+        //        {
+        //            UserId = Guid.NewGuid(),
+        //            FirstName = request.user?.FirstName ?? "",
+        //            LastName = request.user?.LastName ?? "",
+        //            Address = request.user?.LastName ?? "",
+        //            City = request.user?.City ?? "",
+        //        };
+
+        //        context.Users.Add(newUser);
+        //        context.SaveChanges();
+
+        //        return new CreateUserResponse
+        //        {
+        //            StatusCode = (int)HttpStatusCode.OK
+        //        };
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return new CreateUserResponse
+        //        {
+        //            StatusCode = (int)HttpStatusCode.BadRequest
+        //        };
+        //    }
+        //}
 
         //[Route("users/update")]
         //[HttpPost]

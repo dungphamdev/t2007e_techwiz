@@ -31,7 +31,7 @@ namespace WebApi.Controllers
         {
             try
             {
-                var isExist = context.Customers.FirstOrDefault(f => f.Username == request.Username && f.Password == request.Password); 
+                var isExist = context.Customers.FirstOrDefault(f => f.Username == request.Username && f.Password == request.Password);
 
                 if (isExist != null)
                 {
@@ -47,6 +47,15 @@ namespace WebApi.Controllers
                     StatusCode = (int)HttpStatusCode.BadRequest
                 };
             }
+            catch (Exception e)
+            {
+                return new LoginResponse
+                {
+                    LoginStatus = false,
+                    StatusCode = (int)HttpStatusCode.BadRequest
+                };
+            }
+        }
         //[Route("users/list")]
         //[HttpPost]
         //public GetAllUsersResponse GetAlUsers([FromBody] GetAlUsersRequest request)

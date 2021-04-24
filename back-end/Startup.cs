@@ -26,7 +26,7 @@ namespace WebApi
             services.AddCors();
             services.AddControllers();
 
-            services.AddDbContext<TESTDBContext>(options =>
+            services.AddDbContext<DB_CloudKitchenContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });

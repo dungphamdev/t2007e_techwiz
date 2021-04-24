@@ -17,128 +17,128 @@ namespace WebApi.Controllers
     public class APIController : ControllerBase
     {
         private IUserService _userService;
-        private TESTDBContext context;
+        private DB_CloudKitchenContext context;
 
-        public APIController(IUserService userService, TESTDBContext tESTDBContext)
+        public APIController(IUserService userService, DB_CloudKitchenContext db)
         {
             _userService = userService;
-            context = tESTDBContext;
+            context = db;
         }
 
-        [Route("users/list")]
+        //[Route("users/list")]
+        //[HttpPost]
+        //public GetAllUsersResponse GetAlUsers([FromBody] GetAlUsersRequest request)
+        //{
+        //    try
+        //    {
+        //        var listUsers = context.Users.ToList() ?? new List<User>();
+        //        return new GetAllUsersResponse
+        //        {
+        //            ListUsers = listUsers,
+        //            StatusCode = (int)HttpStatusCode.OK
+        //        };
+        //    }catch(Exception e)
+        //    {
+        //        return new GetAllUsersResponse
+        //        {
+        //            ListUsers = null,
+        //            StatusCode = (int)HttpStatusCode.BadRequest
+        //        };
+        //    }
+        //}
+
+        [Route("create")]
         [HttpPost]
-        public GetAllUsersResponse GetAlUsers([FromBody] GetAlUsersRequest request)
+        public CreateCustomerResponse CreateCustomer([FromBody] CreateCustomerRequest request)
         {
             try
             {
-                var listUsers = context.Users.ToList() ?? new List<User>();
-                return new GetAllUsersResponse
+                var newCustomer= new Customer
                 {
-                    ListUsers = listUsers,
-                    StatusCode = (int)HttpStatusCode.OK
+                    CustomerName = request.customer?.CustomerName ?? "",
+                    CustomerEmailId = request.customer?.CustomerEmailId ?? "",
+                    CustomerContactPhone = request.customer?.CustomerContactPhone ?? "",
+                    Username = request.customer?.Username ?? "",
+                    Password = request.customer.Password ?? "",
+                    CustomerAddress = request.customer.CustomerAddress ?? ""
                 };
-            }catch(Exception e)
-            {
-                return new GetAllUsersResponse
-                {
-                    ListUsers = null,
-                    StatusCode = (int)HttpStatusCode.BadRequest
-                };
-            }
-        }
-
-        [Route("users/create")]
-        [HttpPost]
-        public CreateUserResponse CreateUser([FromBody] CreateUserRequest request)
-        {
-            try
-            {
-                var newUser = new User
-                {
-                    UserId = Guid.NewGuid(),
-                    FirstName = request.user?.FirstName ?? "",
-                    LastName = request.user?.LastName ?? "",
-                    Address = request.user?.LastName ?? "",
-                    City = request.user?.City ?? "",
-                };
-
-                context.Users.Add(newUser);
+                context.Customers.Add(newCustomer);
                 context.SaveChanges();
-
-                return new CreateUserResponse
+                context.Dispose();
+                return new CreateCustomerResponse
                 {
                     StatusCode = (int)HttpStatusCode.OK
                 };
             }
             catch (Exception e)
             {
-                return new CreateUserResponse
+                return new CreateCustomerResponse
                 {
                     StatusCode = (int)HttpStatusCode.BadRequest
                 };
             }
         }
 
-        [Route("users/update")]
-        [HttpPost]
-        public UpdateUserResponse UpdateUser([FromBody] UpdateUserRequest request)
-        {
-            try
-            {
-                var user = context.Users.FirstOrDefault(f => f.UserId == request.user.UserId);
+        //[Route("users/update")]
+        //[HttpPost]
+        //public UpdateUserResponse UpdateUser([FromBody] UpdateUserRequest request)
+        //{
+        //    try
+        //    {
+        //        var user = context.Users.FirstOrDefault(f => f.UserId == request.user.UserId);
 
-                if (user != null)
-                {
-                    user.FirstName = request.user?.FirstName ?? "";
-                    user.LastName = request.user?.LastName ?? "";
-                    user.Address = request.user?.Address ?? "";
-                    user.City = request.user?.City ?? "";
+        //        if (user != null)
+        //        {
+        //            user.FirstName = request.user?.FirstName ?? "";
+        //            user.LastName = request.user?.LastName ?? "";
+        //            user.Address = request.user?.Address ?? "";
+        //            user.City = request.user?.City ?? "";
 
-                    context.Users.Update(user);
-                    context.SaveChanges();
-                }
+        //            context.Users.Update(user);
+        //            context.SaveChanges();
+        //        }
 
-                return new UpdateUserResponse
-                {
-                    StatusCode = (int)HttpStatusCode.OK
-                };
-            }
-            catch (Exception e)
-            {
-                return new UpdateUserResponse
-                {
-                    StatusCode = (int)HttpStatusCode.BadRequest
-                };
-            }
-        }
+        //        return new UpdateUserResponse
+        //        {
+        //            StatusCode = (int)HttpStatusCode.OK
+        //        };
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return new UpdateUserResponse
+        //        {
+        //            StatusCode = (int)HttpStatusCode.BadRequest
+        //        };
+        //    }
+        //}
 
-        [Route("users/delete")]
-        [HttpPost]
-        public DeleteUserResponse DeleteUser([FromBody] DeleteUserRequest request)
-        {
-            try
-            {
-                var user = context.Users.FirstOrDefault(f => f.UserId == request.UserId);
+        //[Route("users/delete")]
+        //[HttpPost]
+        //public DeleteUserResponse DeleteUser([FromBody] DeleteUserRequest request)
+        //{
+        //    try
+        //    {
+        //        var user = context.Users.FirstOrDefault(f => f.UserId == request.UserId);
 
-                if (user != null)
-                {
-                    context.Users.Remove(user);
-                    context.SaveChanges();
-                }
+        //        if (user != null)
+        //        {
+        //            context.Users.Remove(user);
+        //            context.SaveChanges();
+        //        }
 
-                return new DeleteUserResponse
-                {
-                    StatusCode = (int)HttpStatusCode.OK
-                };
-            }
-            catch (Exception e)
-            {
-                return new DeleteUserResponse
-                {
-                    StatusCode = (int)HttpStatusCode.BadRequest
-                };
-            }
-        }
+        //        return new DeleteUserResponse
+        //        {
+        //            StatusCode = (int)HttpStatusCode.OK
+        //        };
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return new DeleteUserResponse
+        //        {
+        //            StatusCode = (int)HttpStatusCode.BadRequest
+        //        };
+        //    }
+        //}
 
         //[Route("authenticate")]
         //[HttpPost]

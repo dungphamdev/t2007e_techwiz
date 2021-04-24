@@ -65,7 +65,7 @@ namespace WebApi.Controllers
             try
             {
                 string Username = context.Customers.FirstOrDefault(f => f.Username == request.customer.Username)?.Username;                                           
-                if (Username?.Length == 0 || Username == null)
+                if (Username == null)
                 {
                     var newCustomer = new Customer
                     {

@@ -40,9 +40,28 @@ footer{
     background-color: green;
 }
 
+#slick-container .prev-arrow{
+    position: absolute;
+    top: 75%;
+    left: 7%;
+}
+
+#slick-container .next-arrow{
+    position: absolute;
+    top: 75%;
+    right: 7%;
+}
+
 @media only screen and (max-width: 576px){
     .heading-responsive{
         font-size: 20px;
+    }
+    #slick-container .prev-arrow{
+        visibility: hidden;
+    }
+    
+    #slick-container .next-arrow{
+        visibility: hidden;
     }
 }
 
@@ -61,5 +80,16 @@ footer{
 @media only screen and (min-width: 992px){
     .heading-responsive{
         font-size: 35px;
+    }
+    #slick-container .prev-arrow{
+        position: absolute;
+        top: 73%;
+        left: 15%;
+    }
+    
+    #slick-container .next-arrow{
+        position: absolute;
+        top: 73%;
+        right: 15%;
     }
 }

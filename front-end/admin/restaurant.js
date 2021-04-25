@@ -68,8 +68,13 @@ input.onchange = function () {
         let listString = reader.result.split(',');
 
         contentType = listString[0];
-        console.log('contentType: ', contentType)
     };
 
     reader.readAsDataURL(file);
 };
+
+$("#restaurantImage").change(() => {
+   let path = $("#restaurantImage").val()
+   let fileName = path.split('\\').pop();
+   $(".custom-file label").text(fileName)
+})

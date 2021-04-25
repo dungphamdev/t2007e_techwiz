@@ -222,6 +222,53 @@ namespace WebApi.Controllers
                 };
             }
         }
+
+        [Route("customer/orders/cancel")]
+        [HttpPost]
+        public CustomerCancelResponse CustomerCancelOrder([FromBody] CustomerCancelRequest request)
+        {
+            try
+            {
+                int UID = (int)(context.Customers.FirstOrDefault(f => f.CustomerId == request.CustomerId)?.CustomerId);
+                if (UID != null)
+                {
+                    var bill = context.Billings.FirstOrDefault(p => p.OrderId == request.OrderId);
+                    var stsbill = context.StatusBillings.FirstOrDefault(p => p.OrderId == request.OrderId);
+                    if (bill != null)
+                    {
+                        bill.Status = -1;
+                        if (stsbill != null)
+                        {
+                            stsbill.Status = -1;
+                            context.StatusBillings.Update(stsbill);
+                        }                       
+                        context.Billings.Update(bill);                        
+                        context.SaveChanges();
+                        context.Dispose();
+                    }                    
+                }
+                else
+                {
+                    return new CustomerCancelResponse
+                    {
+                        StatusCode = (int)HttpStatusCode.BadRequest
+                    };
+                }
+                return new CustomerCancelResponse
+                {
+                    StatusCode = (int)HttpStatusCode.OK
+                };
+            }
+            catch (Exception e)
+            {
+                return new CustomerCancelResponse
+                {
+                    StatusCode = (int)HttpStatusCode.BadRequest
+                };
+            }
+        }
+
+
         //[Route("customer/list")]
         //[HttpPost]
         //public GetListCustomerResponse GetAlUsers()

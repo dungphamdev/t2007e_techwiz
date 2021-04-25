@@ -9,7 +9,7 @@ namespace WebApi.Entities.Models
     {
         public int Id { get; set; }
         public int? OrderId { get; set; }
-        public string CustomerId { get; set; }
+        public int CustomerId { get; set; }
         public int? Status { get; set; }
         public DateTime? Date { get; set; }
 

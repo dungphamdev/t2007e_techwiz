@@ -39,7 +39,7 @@ namespace WebApi.Controllers
                             OrderDate = clone2.OrderDate,
                             OrderLocation = clone2.OrderLocation,
                             OrderItemName = clone2.OrderItemName,
-                            OrderItemQty = clone2.OrderItemQty,
+                            OrderItemQty = (int)clone2.OrderItemQty,
                             CustomerId = clone.CustomerId,
                             BillAmount = clone.BillAmount,
                             Date = clone.Date,
@@ -64,9 +64,10 @@ namespace WebApi.Controllers
                 stsbill.OrderId = bill.OrderId;
                 stsbill.CustomerId = (int)bill.CustomerId;
                 stsbill.Status = bill.Status;
-                stsbill.Date = DateTime.Now ;
+                stsbill.Date = DateTime.Now;
                 context.StatusBillings.Add(stsbill);
-                context.SaveChanges();
+                context.Billings.Update(bill);
+                context.SaveChanges();                
                 context.Dispose();
                 return new AdminApproachBillResponse { StatusCode = (int)HttpStatusCode.OK };
             }

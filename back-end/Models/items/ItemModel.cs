@@ -24,6 +24,9 @@ namespace WebApi.Models.items
         public Restaurant RestaurantInfor { get; set; }
         public List<ItemCategory> ListItemCategory { get; set; }
 
+        public string RestaurantLabel { get; set; }
+        public string ItemCategoryLabel { get; set; }
+
         public ItemModel()
         {
             this.ListItemCategory = new List<ItemCategory>();

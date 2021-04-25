@@ -9,6 +9,7 @@ namespace WebApi.Entities.Models
     {
         public Billing()
         {
+            OrderDetails = new HashSet<OrderDetail>();
             StatusBillings = new HashSet<StatusBilling>();
         }
 
@@ -21,6 +22,7 @@ namespace WebApi.Entities.Models
 
         public virtual Customer Customer { get; set; }
         public virtual Restaurant Restaurant { get; set; }
+        public virtual ICollection<OrderDetail> OrderDetails { get; set; }
         public virtual ICollection<StatusBilling> StatusBillings { get; set; }
     }
 }

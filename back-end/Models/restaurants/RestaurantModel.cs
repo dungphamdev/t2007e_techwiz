@@ -1,18 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-#nullable disable
-
-namespace WebApi.Entities.Models
+namespace WebApi.Models.restaurants
 {
-    public partial class Restaurant
+    public class RestaurantModel
     {
-        public Restaurant()
-        {
-            Billings = new HashSet<Billing>();
-            Items = new HashSet<Item>();
-        }
-
         public int RestaurantId { get; set; }
         public string RestaurantName { get; set; }
         public string RestaurantAddress { get; set; }
@@ -22,9 +16,8 @@ namespace WebApi.Entities.Models
         public decimal? Latitude { get; set; }
         public bool? Active { get; set; }
         public string ImagePath { get; set; }
-        public string ImageType { get; set; }
 
-        public virtual ICollection<Billing> Billings { get; set; }
-        public virtual ICollection<Item> Items { get; set; }
+        public string ImageName { get; set; }
+        public string ImageSrc { get; set; }
     }
 }

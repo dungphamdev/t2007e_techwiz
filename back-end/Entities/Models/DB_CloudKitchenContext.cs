@@ -167,8 +167,6 @@ namespace WebApi.Entities.Models
 
             modelBuilder.Entity<OrderDetail>(entity =>
             {
-                entity.HasNoKey();
-
                 entity.Property(e => e.OrderDate).HasColumnType("date");
 
                 entity.Property(e => e.OrderId).HasColumnName("OrderID");
@@ -180,7 +178,7 @@ namespace WebApi.Entities.Models
                 entity.Property(e => e.OrderLocation).HasMaxLength(500);
 
                 entity.HasOne(d => d.Order)
-                    .WithMany()
+                    .WithMany(p => p.OrderDetails)
                     .HasForeignKey(d => d.OrderId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_OrderDetails_Billing");
@@ -195,6 +193,8 @@ namespace WebApi.Entities.Models
                     .HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.ImagePath).HasMaxLength(255);
+
+                entity.Property(e => e.ImageType).HasMaxLength(255);
 
                 entity.Property(e => e.Latitude).HasColumnType("decimal(12, 12)");
 

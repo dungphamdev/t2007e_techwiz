@@ -174,6 +174,54 @@ namespace WebApi.Controllers
             }
         }
 
+        [Route("customer/orders")]
+        [HttpPost]
+        public CustomerOrderResponse CustomerOrder([FromBody] CustomerOrderRequest request)
+        {
+            try
+            {
+                int UID = (int)(context.Customers.FirstOrDefault(f => f.CustomerId == request.CustomerId)?.CustomerId);
+                if (UID != null)
+                {
+                    var bill = new Billing();
+                    bill.CustomerId = request.CustomerId;
+                    bill.RestaurantId = request.RestaurantId;
+                    bill.Date = DateTime.Now;
+                    bill.BillAmount = request.BillAmount;
+                    context.Billings.Add(bill);
+                    context.SaveChanges();
+                    var oderDetail = new OrderDetail {
+                        OrderId = bill.OrderId,
+                        OrderDate = bill.Date,
+                        OrderLocation = request.OrderLocation,
+                        OrderItemName = request.OrderItemName,
+                        OrderItemQty = request.OrderItemQty 
+                    };
+                    
+                    context.OrderDetails.Add(oderDetail);
+                    context.SaveChanges();
+                    context.Dispose();
+                }
+                else
+                {
+                    return new CustomerOrderResponse
+                    {
+                        StatusCode = (int)HttpStatusCode.BadRequest
+                    };
+                }
+                return new CustomerOrderResponse
+                {
+                    StatusCode = (int)HttpStatusCode.OK
+                };
+            }
+            catch (Exception e)
+            {
+                return new CustomerOrderResponse
+                {
+                    StatusCode = (int)HttpStatusCode.BadRequest
+                };
+            }
+        }
         //[Route("customer/list")]
         //[HttpPost]
         //public GetListCustomerResponse GetAlUsers()

@@ -9,7 +9,7 @@ using WebApi.Entities.Models;
 
 namespace WebApi.Controllers
 {
-    [Route("api/category")]
+    [Route("api")]
     [ApiController]
     public class CategoryController : ControllerBase
     {
@@ -57,11 +57,15 @@ namespace WebApi.Controllers
             {
                 if (request != null)
                 {
-                    var newCategory = new ItemCategory
-                    {
-                        ParentId = request.ParentId ?? null,
-                        CategoryName = request.CategoryName ?? ""                       
-                    };
+                    //var newCategory = new ItemCategory
+                    //{                        
+                    //    ParentId = request.ParentId ?? null,
+                    //    CategoryName = request.CategoryName ?? ""     
+                    //};
+
+                    var newCategory = new ItemCategory();
+                    newCategory.ParentId = request.ParentId ?? null;
+                       newCategory.CategoryName = request.CategoryName ?? "";
                     context.ItemCategories.Add(newCategory);
                     context.SaveChanges();
                     context.Dispose();

@@ -9,7 +9,7 @@ using WebApi.Entities.Models;
 
 namespace WebApi.Controllers
 {
-    [Route("api/item")]
+    [Route("api")]
     [ApiController]
     public class ItemController : ControllerBase
     {

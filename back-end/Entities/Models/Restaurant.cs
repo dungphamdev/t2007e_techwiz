@@ -21,6 +21,7 @@ namespace WebApi.Entities.Models
         public decimal? Longitude { get; set; }
         public decimal? Latitude { get; set; }
         public bool? Active { get; set; }
+        public string ImagePath { get; set; }
 
         public virtual ICollection<Billing> Billings { get; set; }
         public virtual ICollection<Item> Items { get; set; }

@@ -194,6 +194,8 @@ namespace WebApi.Entities.Models
                     .IsRequired()
                     .HasDefaultValueSql("((1))");
 
+                entity.Property(e => e.ImagePath).HasMaxLength(255);
+
                 entity.Property(e => e.Latitude).HasColumnType("decimal(12, 12)");
 
                 entity.Property(e => e.Longitude).HasColumnType("decimal(12, 12)");

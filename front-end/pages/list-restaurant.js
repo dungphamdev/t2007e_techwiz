@@ -33,3 +33,28 @@ $('.Slick').slick({
         // instead of a settings object
     ]
 });
+
+$(function () {
+    //get list restaurants;
+    data = {};
+    fetch('http://localhost:4000/api/restaurant/list', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+        .then(response => response.json())
+        .then(res => {
+            let listRestaurants = res.list ?? [];
+            //generate DOM
+            let html = '';
+            listRestaurants.forEach(e => {
+                html += `<img src=${e.imageSrc} alt=${e.imageName}" width="500" height="600">`
+            });
+            $("#test-list-restaurant").append(html);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+});

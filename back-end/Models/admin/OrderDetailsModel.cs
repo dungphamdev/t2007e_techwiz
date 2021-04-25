@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-#nullable disable
-
-namespace WebApi.Entities.Models
+namespace WebApi.Models.admin
 {
-    public partial class OrderDetail
+    public class OrderDetailsModel
     {
         public int OrderDetailId { get; set; }
         public int? OrderId { get; set; }
         public int? ItemId { get; set; }
         public int? ItemQty { get; set; }
-
-        public virtual Item Item { get; set; }
-        public virtual Billing Order { get; set; }
     }
 }

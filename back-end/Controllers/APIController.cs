@@ -174,100 +174,54 @@ namespace WebApi.Controllers
             }
         }
 
-        [Route("customer/orders")]
-        [HttpPost]
-        public CustomerOrderResponse CustomerOrder([FromBody] CustomerOrderRequest request)
-        {
-            try
-            {
-                int UID = (int)(context.Customers.FirstOrDefault(f => f.CustomerId == request.CustomerId)?.CustomerId);
-                if (UID != null)
-                {
-                    var bill = new Billing();
-                    bill.CustomerId = request.CustomerId;
-                    bill.RestaurantId = request.RestaurantId;
-                    bill.Date = DateTime.Now;
-                    bill.BillAmount = request.BillAmount;
-                    context.Billings.Add(bill);
-                    context.SaveChanges();
-                    var oderDetail = new OrderDetail {
-                        OrderId = bill.OrderId,
-                        OrderDate = bill.Date,
-                        OrderLocation = request.OrderLocation,
-                        OrderItemName = request.OrderItemName,
-                        OrderItemQty = request.OrderItemQty 
-                    };
+        //[Route("customer/orders")]
+        //[HttpPost]
+        //public CustomerOrderResponse CustomerOrder([FromBody] CustomerOrderRequest request)
+        //{
+        //    try
+        //    {
+        //        int UID = (int)(context.Customers.FirstOrDefault(f => f.CustomerId == request.CustomerId)?.CustomerId);
+        //        if (UID != null)
+        //        {
+        //            var bill = new Billing();
+        //            bill.CustomerId = request.CustomerId;
+        //            bill.RestaurantId = request.RestaurantId;
+        //            bill.Date = DateTime.Now;
+        //            bill.BillAmount = request.BillAmount;
+        //            context.Billings.Add(bill);
+        //            context.SaveChanges();
+        //            var oderDetail = new OrderDetail {
+        //                OrderId = bill.OrderId,
+        //                OrderDate = bill.Date,
+        //                OrderLocation = request.OrderLocation,
+        //                OrderItemName = request.OrderItemName,
+        //                OrderItemQty = request.OrderItemQty 
+        //            };
                     
-                    context.OrderDetails.Add(oderDetail);
-                    context.SaveChanges();
-                    context.Dispose();
-                }
-                else
-                {
-                    return new CustomerOrderResponse
-                    {
-                        StatusCode = (int)HttpStatusCode.BadRequest
-                    };
-                }
-                return new CustomerOrderResponse
-                {
-                    StatusCode = (int)HttpStatusCode.OK
-                };
-            }
-            catch (Exception e)
-            {
-                return new CustomerOrderResponse
-                {
-                    StatusCode = (int)HttpStatusCode.BadRequest
-                };
-            }
-        }
-
-        [Route("customer/orders/cancel")]
-        [HttpPost]
-        public CustomerCancelResponse CustomerCancelOrder([FromBody] CustomerCancelRequest request)
-        {
-            try
-            {
-                int UID = (int)(context.Customers.FirstOrDefault(f => f.CustomerId == request.CustomerId)?.CustomerId);
-                if (UID != null)
-                {
-                    var bill = context.Billings.FirstOrDefault(p => p.OrderId == request.OrderId);
-                    var stsbill = context.StatusBillings.FirstOrDefault(p => p.OrderId == request.OrderId);
-                    if (bill != null)
-                    {
-                        bill.Status = -1;
-                        if (stsbill != null)
-                        {
-                            stsbill.Status = -1;
-                            context.StatusBillings.Update(stsbill);
-                        }                       
-                        context.Billings.Update(bill);                        
-                        context.SaveChanges();
-                        context.Dispose();
-                    }                    
-                }
-                else
-                {
-                    return new CustomerCancelResponse
-                    {
-                        StatusCode = (int)HttpStatusCode.BadRequest
-                    };
-                }
-                return new CustomerCancelResponse
-                {
-                    StatusCode = (int)HttpStatusCode.OK
-                };
-            }
-            catch (Exception e)
-            {
-                return new CustomerCancelResponse
-                {
-                    StatusCode = (int)HttpStatusCode.BadRequest
-                };
-            }
-        }
-
+        //            context.OrderDetails.Add(oderDetail);
+        //            context.SaveChanges();
+        //            context.Dispose();
+        //        }
+        //        else
+        //        {
+        //            return new CustomerOrderResponse
+        //            {
+        //                StatusCode = (int)HttpStatusCode.BadRequest
+        //            };
+        //        }
+        //        return new CustomerOrderResponse
+        //        {
+        //            StatusCode = (int)HttpStatusCode.OK
+        //        };
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return new CustomerOrderResponse
+        //        {
+        //            StatusCode = (int)HttpStatusCode.BadRequest
+        //        };
+        //    }
+        //}
 
         //[Route("customer/list")]
         //[HttpPost]

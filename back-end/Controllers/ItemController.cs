@@ -1,11 +1,15 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using WebApi.Entities.Models;
+using WebApi.Helpers;
+using WebApi.Models.items;
 
 namespace WebApi.Controllers
 {
@@ -14,10 +18,12 @@ namespace WebApi.Controllers
     public class ItemController : ControllerBase
     {
         private DB_CloudKitchenContext context;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public ItemController(DB_CloudKitchenContext db)
+        public ItemController(DB_CloudKitchenContext db, IWebHostEnvironment webHostEnvironment)
         {
             context = db;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         [Route("item/list")]
@@ -27,10 +33,60 @@ namespace WebApi.Controllers
             try
             {
                 List<Item> listItem = context.Items.ToList() ?? new List<Item>();
+
+                var listRestaurant = context.Restaurants.ToList() ?? new List<Restaurant>();
+                var listItemCategory = context.ItemCategories.ToList();
+
                 if (listItem != null)
                 {
-                    context.Dispose();
-                    return new ListItemResponse { list = listItem, StatusCode = (int)HttpStatusCode.OK };
+                    //context.Dispose();
+                    //return new ListItemResponse { list = listItem, StatusCode = (int)HttpStatusCode.OK };
+
+                    var listResponse = new List<ItemModel>();
+
+                    listItem?.ForEach(item =>
+                    {
+                        var restaurant = listRestaurant.FirstOrDefault(f => f.RestaurantId == item.RestaurantId);
+                        var listItemCategoryByItem = listItemCategory.Where(w => w.CategoryId == item.ItemCategoryId).ToList();
+
+                        var listImageString = item.MainImagePath.Split('\\');
+                        string base64 = null;
+                        try
+                        {
+                            var imagePath = item.MainImagePath.Replace('/', '\\');
+                            string contentRootPath = _webHostEnvironment.ContentRootPath;
+                            var path = Path.Combine(contentRootPath, imagePath);
+                            byte[] b = System.IO.File.ReadAllBytes(path);
+                            base64 = Convert.ToBase64String(b);
+                        }
+                        catch (Exception ex)
+                        {
+                        }
+
+                        listResponse.Add(new ItemModel
+                        {
+                            ItemId = item.ItemId,
+                            ItemName = item.ItemName,
+                            RestaurantId = item.RestaurantId,
+                            ItemDescription = item.ItemDescription,
+                            ItemPrice = item.ItemPrice,
+                            ItemCategoryId = item.ItemCategoryId,
+                            MainImagePath = item.MainImagePath,
+                            ImageType = item.ImageType,
+
+                            ImageName = listImageString.LastOrDefault() ?? "",
+                            ImageSrc = item.ImageType + "," + base64,
+
+                            RestaurantInfor = restaurant,
+                            ListItemCategory = listItemCategoryByItem
+                        });
+                    });
+
+                    return new ListItemResponse
+                    {
+                        list = listResponse,
+                        StatusCode = (int)HttpStatusCode.BadRequest
+                    };
                 }
                 else
                 {
@@ -57,6 +113,9 @@ namespace WebApi.Controllers
             {
                 if (request != null)
                 {
+                    var basePath = "upload\\item";
+                    var imagePath = basePath + "\\" + request.ImageName;
+
                     var newItem = new Item
                     {
                         ItemName = request.ItemName ?? null,
@@ -64,11 +123,18 @@ namespace WebApi.Controllers
                         ItemDescription = request.ItemDescription ?? "",
                         ItemPrice = request.ItemPrice ?? null,
                         ItemCategoryId = request.ItemCategoryId ?? null,
-                        MainImagePath = request.MainImagePath ?? ""
+                        MainImagePath = imagePath,
+                        ImageType = request.ContentType
                     };
                     context.Items.Add(newItem);
                     context.SaveChanges();
                     context.Dispose();
+
+                    #region create image 
+                    string contentRootPath = _webHostEnvironment.ContentRootPath;
+                    var path = Path.Combine(contentRootPath, imagePath);
+                    UploadAdapter.UploadImage(basePath, request.ImageName, request.Base64Value);
+                    #endregion
                 }
                 else
                 {

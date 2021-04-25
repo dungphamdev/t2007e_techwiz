@@ -41,31 +41,29 @@ namespace WebApi.Entities.Models
 
             modelBuilder.Entity<Billing>(entity =>
             {
-                entity.HasKey(e => e.OrderId);
+                entity.HasKey(e => e.OrderId)
+                    .HasName("PK__Billing__C3905BCFD9CA70CD");
 
                 entity.ToTable("Billing");
 
-                entity.Property(e => e.OrderId).HasColumnName("OrderID");
+                entity.Property(e => e.BillAmout).HasColumnType("money");
 
-                entity.Property(e => e.BillAmount).HasColumnType("money");
-
-                entity.Property(e => e.CustomerId).HasColumnName("CustomerID");
-
-                entity.Property(e => e.Date).HasColumnType("date");
-
-                entity.Property(e => e.RestaurantId).HasColumnName("RestaurantID");
-
-                entity.Property(e => e.Status).HasDefaultValueSql("((1))");
+                entity.Property(e => e.OrderDate).HasColumnType("date");
 
                 entity.HasOne(d => d.Customer)
                     .WithMany(p => p.Billings)
                     .HasForeignKey(d => d.CustomerId)
-                    .HasConstraintName("FK_Billing_Customer");
+                    .HasConstraintName("FK__Billing__Custome__534D60F1");
 
                 entity.HasOne(d => d.Restaurant)
                     .WithMany(p => p.Billings)
                     .HasForeignKey(d => d.RestaurantId)
-                    .HasConstraintName("FK_Billing_Restaurants");
+                    .HasConstraintName("FK__Billing__Restaur__5441852A");
+
+                entity.HasOne(d => d.Status)
+                    .WithMany(p => p.Billings)
+                    .HasForeignKey(d => d.StatusId)
+                    .HasConstraintName("FK__Billing__StatusI__5535A963");
             });
 
             modelBuilder.Entity<Customer>(entity =>
@@ -104,6 +102,8 @@ namespace WebApi.Entities.Models
                 entity.Property(e => e.Active)
                     .IsRequired()
                     .HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.ImageType).HasMaxLength(255);
 
                 entity.Property(e => e.ItemCategoryId).HasColumnName("ItemCategoryID");
 
@@ -167,19 +167,17 @@ namespace WebApi.Entities.Models
 
             modelBuilder.Entity<OrderDetail>(entity =>
             {
-                entity.Property(e => e.OrderDate).HasColumnType("date");
+                entity.ToTable("OrderDetail");
 
-                entity.Property(e => e.OrderId).HasColumnName("OrderID");
-
-                entity.Property(e => e.OrderItemName).HasMaxLength(500);
-
-                entity.Property(e => e.OrderLocation).HasMaxLength(500);
+                entity.HasOne(d => d.Item)
+                    .WithMany(p => p.OrderDetails)
+                    .HasForeignKey(d => d.ItemId)
+                    .HasConstraintName("FK__OrderDeta__ItemI__59063A47");
 
                 entity.HasOne(d => d.Order)
                     .WithMany(p => p.OrderDetails)
                     .HasForeignKey(d => d.OrderId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_OrderDetails_Billing");
+                    .HasConstraintName("FK__OrderDeta__Order__5812160E");
             });
 
             modelBuilder.Entity<Restaurant>(entity =>
@@ -209,25 +207,12 @@ namespace WebApi.Entities.Models
 
             modelBuilder.Entity<StatusBilling>(entity =>
             {
+                entity.HasKey(e => e.StatusId)
+                    .HasName("PK__StatusBi__C8EE2063364C8F20");
+
                 entity.ToTable("StatusBilling");
 
-                entity.Property(e => e.Id).HasColumnName("ID");
-
-                entity.Property(e => e.CustomerId)
-                    .HasMaxLength(10)
-                    .HasColumnName("CustomerID")
-                    .IsFixedLength(true);
-
-                entity.Property(e => e.Date).HasColumnType("date");
-
-                entity.Property(e => e.OrderId).HasColumnName("OrderID");
-
-                entity.Property(e => e.Status).HasDefaultValueSql("((2))");
-
-                entity.HasOne(d => d.Order)
-                    .WithMany(p => p.StatusBillings)
-                    .HasForeignKey(d => d.OrderId)
-                    .HasConstraintName("FK_StatusBilling_Billing");
+                entity.Property(e => e.StatusName).HasMaxLength(255);
             });
 
             OnModelCreatingPartial(modelBuilder);

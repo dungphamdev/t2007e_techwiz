@@ -1,16 +1,15 @@
 
 function create(){
     let Model = {
-		'ParentId': '',
+		// 'ParentId': '',
 		'CategoryName': '',
-		
     }
     const formData = new FormData(document.getElementById('category-form'))
     for (var pair of formData.entries()) {
-        if (pair[0] == 'parentid')
-        {
-            Model.ParentId =  pair[1] ? Number(pair[1]) : null ;
-        }
+        // if (pair[0] == 'parentid')
+        // {
+        //     Model.ParentId =  pair[1] ? Number(pair[1]) : null ;
+        // }
         if (pair[0] == 'name') Model.CategoryName = pair[1];
     }
     console.log('ItemModel:', Model)

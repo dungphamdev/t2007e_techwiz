@@ -1,17 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using WebApi.Entities.Models;
 
-#nullable disable
-
-namespace WebApi.Entities.Models
+namespace WebApi.Models.items
 {
-    public partial class Item
+    public class ItemModel
     {
-        public Item()
-        {
-            OrderDetails = new HashSet<OrderDetail>();
-        }
-
         public int ItemId { get; set; }
         public string ItemName { get; set; }
         public int? RestaurantId { get; set; }
@@ -22,8 +18,15 @@ namespace WebApi.Entities.Models
         public string MainImagePath { get; set; }
         public string ImageType { get; set; }
 
-        public virtual ItemCategory ItemCategory { get; set; }
-        public virtual Restaurant Restaurant { get; set; }
-        public virtual ICollection<OrderDetail> OrderDetails { get; set; }
+        public string ImageName { get; set; }
+        public string ImageSrc { get; set; }
+
+        public Restaurant RestaurantInfor { get; set; }
+        public List<ItemCategory> ListItemCategory { get; set; }
+
+        public ItemModel()
+        {
+            this.ListItemCategory = new List<ItemCategory>();
+        }
     }
 }

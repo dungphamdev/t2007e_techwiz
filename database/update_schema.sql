@@ -30,4 +30,29 @@ BEGIN
 	ALTER TABLE OrderDetails
 	ADD OrderDetailId  int identity(1,1) PRIMARY KEY
 END
+GO
+
+IF EXISTS (
+  SELECT * 
+  FROM   sys.columns 
+  WHERE  object_id = OBJECT_ID(N'[dbo].[OrderDetails]') 
+         AND name = 'OrderItemQty'
+)
+BEGIN
+	ALTER TABLE OrderDetails
+	DROP COLUMN OrderItemQty;
+END
+GO
+
+IF NOT EXISTS (
+  SELECT * 
+  FROM   sys.columns 
+  WHERE  object_id = OBJECT_ID(N'[dbo].[OrderDetails]') 
+         AND name = 'OrderItemQty'
+)
+BEGIN
+	ALTER TABLE OrderDetails
+	ADD OrderItemQty int;
+END
+GO
 

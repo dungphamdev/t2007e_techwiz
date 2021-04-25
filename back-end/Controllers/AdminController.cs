@@ -39,7 +39,7 @@ namespace WebApi.Controllers
                             OrderDate = clone2.OrderDate,
                             OrderLocation = clone2.OrderLocation,
                             OrderItemName = clone2.OrderItemName,
-                            OrderItemQty = (int)clone2.OrderItemQty,
+                            OrderItemQty = clone2.OrderItemQty ?? 1,
                             CustomerId = clone.CustomerId,
                             BillAmount = clone.BillAmount,
                             Date = clone.Date,

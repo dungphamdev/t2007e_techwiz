@@ -196,8 +196,7 @@ namespace WebApi.Controllers
                         OrderLocation = request.OrderLocation,
                         OrderItemName = request.OrderItemName,
                         OrderItemQty = request.OrderItemQty 
-                    };
-                    
+                    };                    
                     context.OrderDetails.Add(oderDetail);
                     context.SaveChanges();
                     context.Dispose();

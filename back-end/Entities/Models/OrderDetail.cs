@@ -12,6 +12,7 @@ namespace WebApi.Entities.Models
         public string OrderLocation { get; set; }
         public string OrderItemName { get; set; }
         public string OrderItemQty { get; set; }
+        public int OrderDetailId { get; set; }
 
         public virtual Billing Order { get; set; }
     }

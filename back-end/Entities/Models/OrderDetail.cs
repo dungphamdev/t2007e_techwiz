@@ -11,7 +11,7 @@ namespace WebApi.Entities.Models
         public DateTime? OrderDate { get; set; }
         public string OrderLocation { get; set; }
         public string OrderItemName { get; set; }
-        public string OrderItemQty { get; set; }
+        public int OrderItemQty { get; set; }
 
         public virtual Billing Order { get; set; }
     }

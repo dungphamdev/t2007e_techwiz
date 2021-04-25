@@ -11,7 +11,7 @@ using System.Net;
 
 namespace WebApi.Controllers
 {
-    [Route("api/restaurant")]
+    [Route("api")]
     [ApiController]
     public class RestaurantController : ControllerBase
     {

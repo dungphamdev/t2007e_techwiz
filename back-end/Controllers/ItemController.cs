@@ -256,5 +256,47 @@ namespace WebApi.Controllers
                 };
             }
         }
+
+        [Route("item/iteminfo")]
+        [HttpPost]
+        public GetItembyIdResponse GetItembyID(GetItembyIdRequest request)
+        {
+            try
+            {
+                if (request != null)
+                {
+                    Item itemrp = context.Items.FirstOrDefault(p => p.ItemId == request.ItemId && p.Active == true);
+                    if (itemrp != null)
+                    {
+                        return new GetItembyIdResponse
+                        {
+                            item = itemrp,
+                            StatusCode = (int)HttpStatusCode.BadRequest
+                        };
+                    }
+                    else
+                    {
+                        return new GetItembyIdResponse
+                        {
+                            StatusCode = (int)HttpStatusCode.BadRequest
+                        };
+                    }
+                }
+                else
+                {
+                    return new GetItembyIdResponse
+                    {
+                        StatusCode = (int)HttpStatusCode.BadRequest
+                    };
+                }
+            }
+            catch (Exception e)
+            {
+                return new GetItembyIdResponse
+                {
+                    StatusCode = (int)HttpStatusCode.BadRequest
+                };
+            }
+        }
     }
 }

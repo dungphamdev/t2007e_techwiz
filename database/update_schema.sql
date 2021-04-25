@@ -20,4 +20,14 @@ BEGIN
 	ADD ImageType nvarchar(255);
 END
 
+IF NOT EXISTS (
+  SELECT * 
+  FROM   sys.columns 
+  WHERE  object_id = OBJECT_ID(N'[dbo].[OrderDetails]') 
+         AND name = 'OrderDetailId'
+)
+BEGIN
+	ALTER TABLE OrderDetails
+	ADD OrderDetailId  int identity(1,1) PRIMARY KEY
+END
 

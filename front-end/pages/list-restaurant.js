@@ -48,11 +48,34 @@ $(function () {
         .then(res => {
             let listRestaurants = res.list ?? [];
             //generate DOM
-            let html = '';
+            let restaurants='';
+            console.log(listRestaurants);
+            let options = {
+                data:listRestaurants,
+                getValue: "restaurantName",
+                list: {
+                    match: {
+                        enabled: true
+                    }
+                }
+            };
+            $("#sh").easyAutocomplete(options)
+            let autoCompleted=[];
             listRestaurants.forEach(e => {
-                html += `<img src=${e.imageSrc} alt=${e.imageName}" width="500" height="600">`
+                autoCompleted.push(e.restaurantName)
+                restaurants += `<div class="col-md-3 col-sm-6 mt-5">`
+                restaurants += `<img src=${e.imageSrc} alt=${e.imageName}" width="220px" height="auto" alt=" ">`
+                restaurants += `<br/><br/>`
+                restaurants += `<strong>${e.restaurantName}</strong>`
+                restaurants += `<br/><br/>`
+                restaurants += `<span><i class="fas fa-caret-square-down" style="font-size:13px;"></i> Menu: </span> `
+                restaurants += `<br/> `
+                restaurants += ` <span><i class="fas fa-map-marked-alt" style="font-size:13px;" ></i> Address: </span> ${e.restaurantAddress}`
+                restaurants += `</div>`
             });
-            $("#test-list-restaurant").append(html);
+
+            $("#restaurant").append(restaurants)
+
         })
         .catch((error) => {
             console.error('Error:', error);

@@ -1,9 +1,10 @@
-$(".responsive").slick({
-  dots: false,
-  infinite: false,
+$(".responsive-carousel").slick({
+  // infinite: false,
   speed: 300,
   slidesToShow: 4,
   slidesToScroll: 1,
+  prevArrow: '.prev-arrow',
+  nextArrow: '.next-arrow',
   responsive: [
     {
       breakpoint: 1024,

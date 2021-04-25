@@ -173,8 +173,6 @@ namespace WebApi.Entities.Models
 
                 entity.Property(e => e.OrderItemName).HasMaxLength(500);
 
-                entity.Property(e => e.OrderItemQty).HasMaxLength(500);
-
                 entity.Property(e => e.OrderLocation).HasMaxLength(500);
 
                 entity.HasOne(d => d.Order)

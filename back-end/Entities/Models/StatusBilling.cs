@@ -7,15 +7,12 @@ namespace WebApi.Entities.Models
 {
     public partial class StatusBilling
     {
-        public StatusBilling()
-        {
-            Billings = new HashSet<Billing>();
-        }
+        public int Id { get; set; }
+        public int? OrderId { get; set; }
+        public string CustomerId { get; set; }
+        public int? Status { get; set; }
+        public DateTime? Date { get; set; }
 
-        public int StatusId { get; set; }
-        public string StatusName { get; set; }
-        public string StatusDescription { get; set; }
-
-        public virtual ICollection<Billing> Billings { get; set; }
+        public virtual Billing Order { get; set; }
     }
 }

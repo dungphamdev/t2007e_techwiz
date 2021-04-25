@@ -55,9 +55,7 @@ namespace WebApi.Entities.Models
 
                 entity.Property(e => e.RestaurantId).HasColumnName("RestaurantID");
 
-                entity.Property(e => e.StatusId)
-                    .HasColumnName("StatusID")
-                    .HasDefaultValueSql("((1))");
+                entity.Property(e => e.Status).HasDefaultValueSql("((1))");
 
                 entity.HasOne(d => d.Customer)
                     .WithMany(p => p.Billings)
@@ -68,12 +66,6 @@ namespace WebApi.Entities.Models
                     .WithMany(p => p.Billings)
                     .HasForeignKey(d => d.RestaurantId)
                     .HasConstraintName("FK_Billing_Restaurants");
-
-                entity.HasOne(d => d.Status)
-                    .WithMany(p => p.Billings)
-                    .HasForeignKey(d => d.StatusId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Billing_StatusBilling");
             });
 
             modelBuilder.Entity<Customer>(entity =>
@@ -121,7 +113,9 @@ namespace WebApi.Entities.Models
 
                 entity.Property(e => e.ItemPrice).HasColumnType("money");
 
-                entity.Property(e => e.MainImagePath).HasMaxLength(500);
+                entity.Property(e => e.MainImagePath)
+                    .IsRequired()
+                    .HasMaxLength(500);
 
                 entity.Property(e => e.RestaurantId).HasColumnName("RestaurantID");
 
@@ -215,15 +209,25 @@ namespace WebApi.Entities.Models
 
             modelBuilder.Entity<StatusBilling>(entity =>
             {
-                entity.HasKey(e => e.StatusId);
-
                 entity.ToTable("StatusBilling");
 
-                entity.Property(e => e.StatusId).HasColumnName("StatusID");
+                entity.Property(e => e.Id).HasColumnName("ID");
 
-                entity.Property(e => e.StatusDescription).HasMaxLength(500);
+                entity.Property(e => e.CustomerId)
+                    .HasMaxLength(10)
+                    .HasColumnName("CustomerID")
+                    .IsFixedLength(true);
 
-                entity.Property(e => e.StatusName).HasMaxLength(500);
+                entity.Property(e => e.Date).HasColumnType("date");
+
+                entity.Property(e => e.OrderId).HasColumnName("OrderID");
+
+                entity.Property(e => e.Status).HasDefaultValueSql("((2))");
+
+                entity.HasOne(d => d.Order)
+                    .WithMany(p => p.StatusBillings)
+                    .HasForeignKey(d => d.OrderId)
+                    .HasConstraintName("FK_StatusBilling_Billing");
             });
 
             OnModelCreatingPartial(modelBuilder);

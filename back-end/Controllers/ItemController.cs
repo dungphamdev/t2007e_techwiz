@@ -77,16 +77,21 @@ namespace WebApi.Controllers
                             ImageName = listImageString.LastOrDefault() ?? "",
                             ImageSrc = item.ImageType + "," + base64,
 
-                            RestaurantInfor = restaurant,
-                            ListItemCategory = listItemCategoryByItem
+                            //RestaurantInfor = restaurant,
+                            //ListItemCategory = listItemCategoryByItem
+
+                            RestaurantLabel = restaurant?.RestaurantName ?? "",
+                            ItemCategoryLabel = String.Join(", ", listItemCategoryByItem.Select(w => w.CategoryName).ToList())
                         });
                     });
 
-                    return new ListItemResponse
+                    var result = new ListItemResponse
                     {
                         list = listResponse,
-                        StatusCode = (int)HttpStatusCode.BadRequest
+                        StatusCode = (int)HttpStatusCode.OK
                     };
+
+                    return result;
                 }
                 else
                 {

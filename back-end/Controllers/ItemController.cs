@@ -259,28 +259,65 @@ namespace WebApi.Controllers
 
         [Route("item/iteminfo")]
         [HttpPost]
-        public GetItembyIdResponse GetItembyID(GetItembyIdRequest request)
+        public GetItembyIdResponse GetItembyID([FromBody] GetItembyIdRequest request)
         {
             try
             {
-                if (request != null)
+                Item item = context.Items.FirstOrDefault(f => f.ItemId == request.ItemId && f.Active == true);
+
+                var listRestaurant = context.Restaurants.ToList() ?? new List<Restaurant>();
+                var listItemCategory = context.ItemCategories.ToList();
+
+                if (item != null)
                 {
-                    Item itemrp = context.Items.FirstOrDefault(p => p.ItemId == request.ItemId && p.Active == true);
-                    if (itemrp != null)
+                    //context.Dispose();
+                    //return new ListItemResponse { list = listItem, StatusCode = (int)HttpStatusCode.OK };
+
+                    var itemResponse = new ItemModel();
+
+                    
+                    var restaurant = listRestaurant.FirstOrDefault(f => f.RestaurantId == item.RestaurantId);
+                    var listItemCategoryByItem = listItemCategory.Where(w => w.CategoryId == item.ItemCategoryId).ToList();
+
+                    var listImageString = item.MainImagePath.Split('\\');
+                    string base64 = null;
+                    try
                     {
-                        return new GetItembyIdResponse
-                        {
-                            item = itemrp,
-                            StatusCode = (int)HttpStatusCode.BadRequest
-                        };
+                        var imagePath = item.MainImagePath.Replace('/', '\\');
+                        string contentRootPath = _webHostEnvironment.ContentRootPath;
+                        var path = Path.Combine(contentRootPath, imagePath);
+                        byte[] b = System.IO.File.ReadAllBytes(path);
+                        base64 = Convert.ToBase64String(b);
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        return new GetItembyIdResponse
-                        {
-                            StatusCode = (int)HttpStatusCode.BadRequest
-                        };
                     }
+
+                    itemResponse  = new ItemModel
+                    {
+                        ItemId = item.ItemId,
+                        ItemName = item.ItemName,
+                        RestaurantId = item.RestaurantId,
+                        ItemDescription = item.ItemDescription,
+                        ItemPrice = item.ItemPrice,
+                        ItemCategoryId = item.ItemCategoryId,
+                        MainImagePath = item.MainImagePath,
+                        ImageType = item.ImageType,
+                        Active = item.Active,
+                        ImageName = listImageString.LastOrDefault() ?? "",
+                        ImageSrc = item.ImageType + "," + base64,
+
+                        RestaurantLabel = restaurant?.RestaurantName ?? "",
+                        ItemCategoryLabel = String.Join(", ", listItemCategoryByItem.Select(w => w.CategoryName).ToList())
+                    };                    
+
+                    var result = new GetItembyIdResponse
+                    {
+                        item = itemResponse,
+                        StatusCode = (int)HttpStatusCode.OK
+                    };
+
+                    return result;
                 }
                 else
                 {

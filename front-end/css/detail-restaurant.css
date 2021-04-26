@@ -2,6 +2,7 @@
     box-sizing: border-box;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
+   
     
 }
 body{
@@ -14,6 +15,12 @@ body{
     height: 100%;
     
 }
+/* #footer1>.container{
+  margin : 0 auto;
+} */
+/* #footer_strong{
+  margin : 0 auto;
+} */
 #footer_strong p{
     font-weight: 650;
     font-size: 21px;
@@ -25,8 +32,8 @@ body{
     font-size: 45px ;
     font-weight: 700;
     color: white;
-    transform: scale(.8, 1);
-    text-align: left;
+    
+    
 }
 .footer2 hr{
     
@@ -209,7 +216,7 @@ footer{
     background-color: black
 }
 
-
+/* ----------------------------------------------------- */
 #modal-dialog-1, #modal-dialog-2 ,#modal-dialog-3{    
     position: fixed;    
     right: 0;    top: 0;    
@@ -257,13 +264,202 @@ footer{
       width: 90vw;
     }
   }
+
+/* ------------------------------------------------------- */
+
   button>.font-weight-bold{
       font-size: 35px;
       margin-left: 0px;
-      color: red;
+      
   }
   #navigator-2 {
     height: 8vh;
     background-color: white;
     box-shadow: 0px 10px 15px -6px rgba(0,0,0,0.4);
     }
+    .navbar-brand>img{
+      margin-top: 55px;
+    }
+    @media only screen and (max-width: 1000px) {
+      .navbar-brand>img{
+       margin-top: -12px;
+      }
+      .navbar-nav>.row{
+        margin-top: -52px;
+      }
+    }
+    .navbar-brand>img:hover{
+      -webkit-animation:spin 3s linear infinite;
+    -moz-animation:spin 3s linear infinite;
+    animation:spin 3s linear infinite;
+    }
+    @-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+
+.foodmate{
+  font-size: 23px;
+  font-weight: 700;
+  font-style: italic;
+  color: white;
+}
+@import url(https://fonts.googleapis.com/css?family=Raleway:400,700,900,400italic,700italic,900italic);
+
+.foodmate {
+  animation: text-shadow 2s ease-in-out infinite;
+  
+color: white
+}
+
+.foodmate:hover {
+  animation-play-state: paused;
+
+
+}
+
+@keyframes text-shadow {
+  0% {  
+      transform: translateY(0);
+      text-shadow: 
+          0 0 0 #0c2ffb, 
+          0 0 0 #2cfcfd, 
+          0 0 0 #fb203b, 
+          0 0 0 #fefc4b;
+  }
+
+  20% {  
+      transform: translateY(-1em);
+      text-shadow: 
+          0 0.125em 0 #0c2ffb, 
+          0 0.25em 0 #2cfcfd, 
+          0 -0.125em 0 #fb203b, 
+          0 -0.25em 0 #fefc4b;
+  }
+
+  40% {  
+      transform: translateY(0.5em);
+      text-shadow: 
+          0 -0.0625em 0 #0c2ffb, 
+          0 -0.125em 0 #2cfcfd, 
+          0 0.0625em 0 #fb203b, 
+          0 0.125em 0 #fefc4b;
+  }
+  
+ 60% {
+      transform: translateY(-0.25em);
+      text-shadow: 
+          0 0.03125em 0 #0c2ffb, 
+          0 0.0625em 0 #2cfcfd, 
+          0 -0.03125em 0 #fb203b, 
+          0 -0.0625em 0 #fefc4b;
+  }
+
+  80% {  
+      transform: translateY(0);
+      text-shadow: 
+          0 0 0 #0c2ffb, 
+          0 0 0 #2cfcfd, 
+          0 0 0 #fb203b, 
+          0 0 0 #fefc4b;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+
+/* --------------------------------------------------------- */
+
+#modal-dialog-1, #modal-dialog-2 {
+  position: fixed;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 50%;
+}
+
+#modal-content-1, #modal-content-2 {
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.productImg {
+  height: 100px;
+  width: 100px;
+}
+
+#submitOrderBtn {
+  width: 100%;
+  height: 40px;
+}
+
+#modal-footer-order {
+  justify-content: initial;
+}
+
+.adjustAmountBtn {
+  width: 40px;
+  height: 40px;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+-webkit-appearance: none;
+margin: 0;
+}
+
+/* Firefox */
+#quantityInOrder {
+-moz-appearance: textfield;
+}
+
+#quantityInOrder {
+  width: 40px;
+  height: 35px;
+  line-height: 40px;
+}
+
+@media only screen and (max-width: 768px){
+  #modal-dialog-2, #modal-dialog-1 {
+      width: 80vw;
+  }
+}
+
+@media only screen and (max-width: 576px){
+  #modal-dialog-2, #modal-dialog-1 {
+      width: 90vw;
+  }
+}
+
+.adjustAmountBtn-small {
+  border: none;
+  height: 15px;
+  width: 15px;
+  padding: none;
+  line-height: 20px;
+}
+
+.quantityInBasket {
+  width: 20px;
+}
+
+.productImgInBasket {
+  width: 80px;
+  height: 80px;
+  
+}
+.productImgInBasket>img{
+  border-radius: 10px;
+  border: 2px solid #5BBD2B
+}
+
+/* --------------------------------------------------------- */
+.nav-link>i:hover{
+  color:#5BBD2B;
+  
+}

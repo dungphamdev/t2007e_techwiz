@@ -26,7 +26,7 @@ namespace WebApi.Controllers
         {
             try
             {
-                List<ItemCategory> listCategory = context.ItemCategories.ToList() ?? new List<ItemCategory>();
+                List<ItemCategory> listCategory = context.ItemCategories.Where(w => w.Active == true).ToList() ?? new List<ItemCategory>();
                 if (listCategory != null)
                 {
                     context.Dispose();
@@ -57,15 +57,9 @@ namespace WebApi.Controllers
             {
                 if (request != null)
                 {
-                    //var newCategory = new ItemCategory
-                    //{                        
-                    //    ParentId = request.ParentId ?? null,
-                    //    CategoryName = request.CategoryName ?? ""     
-                    //};
-
                     var newCategory = new ItemCategory();
                     newCategory.ParentId = request.ParentId ?? null;
-                       newCategory.CategoryName = request.CategoryName ?? "";
+                    newCategory.CategoryName = request.CategoryName ?? "";
                     context.ItemCategories.Add(newCategory);
                     context.SaveChanges();
                     context.Dispose();

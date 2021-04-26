@@ -32,8 +32,7 @@ namespace WebApi.Controllers
         {
             try
             {
-                List<Item> listItem = context.Items.ToList() ?? new List<Item>();
-
+                List<Item> listItem = context.Items.Where(w => w.Active == true).ToList() ?? new List<Item>();
                 var listRestaurant = context.Restaurants.ToList() ?? new List<Restaurant>();
                 var listItemCategory = context.ItemCategories.ToList();
 
@@ -170,15 +169,33 @@ namespace WebApi.Controllers
             {
                 if (request != null)
                 {
+                    var basePath = "upload\\item";
+                    var imagePath = basePath + "\\" + request.ImageName;
+
                     Item item = context.Items.FirstOrDefault(p => p.ItemId == request.ItemId && p.Active == true);
                     if(item != null)
                     {
-                        item.ItemCategoryId = request.ItemCategoryId ?? null;
-                        item.ItemDescription = request.ItemDescription ?? "";
-                        item.ItemName = request.ItemName ?? "";
-                        item.ItemPrice = request.ItemPrice ?? null;
-                        item.MainImagePath = request.MainImagePath ?? "";
+                        //item.ItemCategoryId = request.ItemCategoryId ?? null;
+                        //item.ItemDescription = request.ItemDescription ?? "";
+                        //item.ItemName = request.ItemName ?? "";
+                        //item.ItemPrice = request.ItemPrice ?? null;
+                        //item.MainImagePath = request.MainImagePath ?? "";
+                        //item.RestaurantId = request.RestaurantId ?? null;
+
+                        item.ItemName = request.ItemName ?? null;
                         item.RestaurantId = request.RestaurantId ?? null;
+                        item.ItemDescription = request.ItemDescription ?? "";
+                        item.ItemPrice = request.ItemPrice ?? null;
+                        item.ItemCategoryId = request.ItemCategoryId ?? null;
+                        item.MainImagePath = imagePath;
+                        item.ImageType = request.ContentType;
+
+                        #region create image 
+                        string contentRootPath = _webHostEnvironment.ContentRootPath;
+                        var path = Path.Combine(contentRootPath, imagePath);
+                        UploadAdapter.UploadImage(basePath, request.ImageName, request.Base64Value);
+                        #endregion
+
                         context.Update(item);
                         context.SaveChanges();
                         context.Dispose();

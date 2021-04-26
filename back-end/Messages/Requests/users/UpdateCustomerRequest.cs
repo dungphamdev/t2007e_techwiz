@@ -11,6 +11,8 @@
             public string CustomerEmailId { get; set; }
             public string CustomerContactPhone { get; set; }
             public string CustomerAddress { get; set; }
+            public bool IsStaff { get; set; }
+            public int? RestaurantId { get; set; }
         }
     }
 }
